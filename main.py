@@ -18,6 +18,9 @@ def analyse():
         s_ = np.fft.rfft(pad(elm))
         f,A = np.argmax(abs(s_)),np.max(abs(s_))
         f,A = f*44100/float(2**16),20*np.log10(2*A/4096.)
+
+                
+        
         if A>=-35:   
             result = "Fréquence: {} Hz, Amplitude: {} dBFS".format(int(f),int(A))
             print result
