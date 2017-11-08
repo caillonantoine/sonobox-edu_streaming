@@ -10,15 +10,15 @@ def pad(array):
     else:
         y = np.zeros(2**16)
         y[0:len(array)] = array
-        return array
+        return y
         
 def analyse():
-    signal_in = sc.init_sound_card(1024)
+    signal_in = sc.init_sound_card(4096)
     for elm in signal_in:
-        s_ = np.fft.rfft(elm)
-        f,A = np.argmax(abs(p_)),np.max(abs(p_))
-        f,A = f*44100/float(2**16),20*np.log10(2*A/1024.)
-        if A>=-20:   
+        s_ = np.fft.rfft(pad(elm))
+        f,A = np.argmax(abs(s_)),np.max(abs(s_))
+        f,A = f*44100/float(2**16),20*np.log10(2*A/4096.)
+        if A>=-35:   
             result = "Fréquence: {} Hz, Amplitude: {} dBFS".format(int(f),int(A))
             print result
             
