@@ -8,7 +8,8 @@ class MuseScore(object):
     def send(self,note):
         self.midi_output.send(md.Message('note_on',note=note))
         self.midi_output.send(md.Message('note_off',note=note))
+        print "sent {}".format(note)
     def close(self):
         self.midi_output.close()
 
-        
+muse = MuseScore()
