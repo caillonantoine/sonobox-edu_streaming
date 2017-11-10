@@ -17,7 +17,7 @@ def detection(array):
     return array_pike
     
 def seuil(amp,array):
-    array = abs(array)/4096.
+    array = abs(array)/16384.
     return np.clip(array,10**(amp/20.),None) -10**(amp/20.)
     
 def harmonique(array):

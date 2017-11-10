@@ -21,7 +21,7 @@ def get_midi_note_from_f(f):
     return midi_note[np.argmin(abs(midi_scale - f))]-12
         
 def analyse():
-    signal_in = sc.init_sound_card(4096)
+    signal_in = sc.init_sound_card(16384)
     for elm in signal_in:
         s_ = np.fft.rfft(pad(elm))
         f = dt.harmonique(dt.detection(dt.seuil(-30,s_)))
