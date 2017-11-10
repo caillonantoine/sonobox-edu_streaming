@@ -24,16 +24,16 @@ def analyse():
     recorded_frequency = []
     for elm in signal_in:
         s_ = np.fft.rfft(pad(elm))
-        f,A = np.argmax(abs(s_)[1050:])+1050,np.max(abs(s_))
+        f,A = np.argmax(abs(s_)),np.max(abs(s_))
         f,A = f*44100/float(2**16),20*np.log10(2*A/4096.)
         
-        if A>=-35:   
-            #result = "Fréquence: {} Hz, Amplitude: {} dBFS".format(int(f),int(A))
-            #print result
+        if A>=-25 and f>=700:   
             recorded_frequency.append(f)
-        else:
+        elif A<-25:
             if recorded_frequency:
-                ms.muse.send(get_midi_note_from_f(np.mean(recorded_frequency)))
+                moyenne = np.mean(recorded_frequency)
+                note = get_midi_note_from_f(moyenne)
+                ms.muse.send(note)
                 recorded_frequency = []
             
             
