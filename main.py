@@ -2,6 +2,7 @@
 import numpy as np
 from ext import musescore as ms
 from ext import soundcard as sc
+from ext import detection as dt
 
 #%%
 
@@ -21,21 +22,13 @@ def get_midi_note_from_f(f):
         
 def analyse():
     signal_in = sc.init_sound_card(4096)
-    recorded_frequency = []
     for elm in signal_in:
         s_ = np.fft.rfft(pad(elm))
-        f,A = np.argmax(abs(s_)),np.max(abs(s_))
-        f,A = f*44100/float(2**16),20*np.log10(2*A/4096.)
+        f = dt.harmonique(dt.detection(dt.seuil(-30,s_)))
+        f = np.array(f)*44100/float(2**16)
+        if list(f):
+            print f.astype(int)
         
-        if A>=-25 and f>=700:   
-            recorded_frequency.append(f)
-        elif A<-25:
-            if recorded_frequency:
-                moyenne = np.mean(recorded_frequency)
-                note = get_midi_note_from_f(moyenne)
-                ms.muse.send(note)
-                recorded_frequency = []
-            
             
 if __name__ == "__main__":
     analyse()

@@ -19,3 +19,12 @@ def init_sound_card(chunk_size):
     sc.setperiodsize(chunk_size)
     while True:
         yield np.fromstring(sc.read()[1],np.int16)/32767.
+        
+        
+    
+    
+def sin_init_sound_card(chunk):
+    space = np.linspace(0,10,44100*20)
+    signal = np.sin(1000*np.pi*2*space) + np.sin(1500*np.pi*2*space)
+    for elm in range(44100*10/chunk):
+        yield signal[elm*chunk:(elm+1)*chunk]
