@@ -3,4 +3,4 @@ wget https://pypi.python.org/packages/52/b6/44871791929d9d7e11325af0b7be711388df
 tar xvzf pyalsaaudio-0.8.4.tar.gz
 cd pyalsaaudio-0.8.4/
 python setup.py install
-pip install mido python-rtmidi
+pip install mido python-rtmidi numpy matplotlib scipy
