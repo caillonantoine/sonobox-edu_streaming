@@ -4,3 +4,4 @@ tar xvzf pyalsaaudio-0.8.4.tar.gz
 cd pyalsaaudio-0.8.4/
 python setup.py install
 pip install mido python-rtmidi numpy matplotlib scipy
+rm -r pyalsaaudio-0.8.4/ pyalsaaudio-0.8.4.tar.gz
