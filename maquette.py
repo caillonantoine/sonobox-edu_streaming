@@ -4,17 +4,17 @@ import matplotlib.pyplot as plt
 x = [0,0,0,1,2,3,2,1,0,0,1,2,3,2,1,2,3,2,1,0,0,0,1,2,3,4,5,6,5,4,3,2,1,2,3,4,5,4,5,6,5,4,5,4,3,2,3,2,1,2,1,0,0,0,0,0]
 N = len(x)
 search = 10
-spare = np.zeros_like(range(search))
-logical = [False for elm in spare]
-pas = 6/float(search)
+sparse = np.zeros_like(range(search))
+state = [False for elm in sparse]
+step = 6/float(search)
 
-for i in range(N):
-    for j in range(len(spare)):
-        if x[i] < j*pas and logical[j]:
-            spare[j] += 1
-            logical[j] = False
-        elif x[i] > j*pas and not logical[j]:
-            spare[j] += 1
-            logical[j] = True
+for ii in range(N):
+    for jj in range(len(sparse)):
+        if x[ii] < jj*step and state[jj]:
+            sparse[jj] += 1
+            state[jj] = False
+        elif x[ii] > jj*step and not state[jj]:
+            sparse[jj] += 1
+            state[jj] = True
             
-print np.argmax(spare)*pas
+print np.argmax(sparse)*step
