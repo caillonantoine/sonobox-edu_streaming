@@ -23,7 +23,8 @@ def get_midi_note_from_f(f):
 def analyse():
     signal_in = sc.init_sound_card(512)
     for elm in signal_in:
-        s_ = np.fft.rfft(pad(elm))
+        s_ = abs(np.fft.rfft(pad(elm)))
+        print 2*np.max(s_)/512.
         f = dt.harmonique(dt.detection(dt.seuil(-30,s_)))
         f = np.array(f)*44100/float(2**16)
         if list(f):
