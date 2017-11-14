@@ -25,7 +25,7 @@ def harmonique(array):
     fondamentale = []
     for i,o in enumerate(array):
         if o:
-            if 0 in i % np.array(fondamentale):
+            if i % np.array(fondamentale).any() <= 1:
                 pass
             else:
                 fondamentale.append(i)

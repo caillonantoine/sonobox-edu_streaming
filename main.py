@@ -24,11 +24,9 @@ def analyse():
     signal_in = sc.init_sound_card(512)
     for elm in signal_in:
         s_ = abs(np.fft.rfft(pad(elm)))
-        print 2*np.max(s_)/512.
-        f = dt.harmonique(dt.detection(dt.seuil(-30,s_)))
+        f = dt.harmonique(dt.detection(dt.seuil(-35,s_)))
         f = np.array(f)*44100/float(2**16)
-        if list(f):
-            print f.astype(int)
+        print f
         
             
 if __name__ == "__main__":
