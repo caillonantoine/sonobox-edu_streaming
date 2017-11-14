@@ -3,28 +3,33 @@ implicit none
 
 integer, intent(in) :: N,search
 real, intent(in), dimension(N) :: x
-real, intent(out), dimension(N) ::y
+integer, intent(out), dimension(search) ::y
 real, intent(in) :: amplitude
 
 integer, dimension(search) :: sparse,state
-integer :: ii,jj
-real :: step
+integer :: mm,nn
+real :: step,thresh
 
 step = amplitude/search
 
-do ii=1,N
-	do jj=1,search
-		if x(ii) < jj*step .and. state(jj) == 1 then
-			sparse(jj) = sparse(jj) + 1
-			state(jj) = 0
-		elseif x(ii) > jj*step .and. state(jj) == 0 then
-			sparse(jj) = sparse(jj) + 1
-			state(jj) = 1
-		endif
-	enddo
+do mm=1,search
+    state(mm) = 0
+    sparse(mm) = 0
 enddo
 
-y = maxloc(sparse)*step
+do mm=1,N,1
+    do nn=1,search,1
+        if (x(mm) < nn*step .and. state(nn) == 1) then
+            sparse(nn) = sparse(nn) + 1
+            state(nn) = 0
+        elseif (x(mm) >= nn*step .and. state(nn) == 0) then
+            sparse(nn) = sparse(nn) + 1
+            state(nn) = 1
+        endif
+    enddo
+enddo
+
+
 			
 
 end subroutine detection
