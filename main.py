@@ -19,6 +19,9 @@ def get_midi_note_from_f(f):
     midi_scale = 110*np.power(2,np.array(range(120))/12.)
     midi_note = np.array(range(120))+45
     return midi_note[np.argmin(abs(midi_scale - f))]-12
+    
+def check_and_send(freq):
+    print "PAS ENCORE IMPLEMENTE"
         
 def analyse():
     signal_in = sc.init_sound_card(512)
@@ -31,8 +34,9 @@ def analyse():
         if list(f):
             recorded_frequency.append(f)
         else:
-            
+            check_and_send(recorded_frequency)
         
+
             
 if __name__ == "__main__":
     pass
