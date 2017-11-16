@@ -7,5 +7,5 @@ pip install mido python-rtmidi numpy scipy
 cd ..
 rm -r pyalsaaudio-0.8.4/ pyalsaaudio-0.8.4.tar.gz
 cd ext
-f2py -c peak_location.f90 -m peak_location
+f2py -c peak_from_max.f90 -m pfm
 cd ..

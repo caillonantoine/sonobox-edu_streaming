@@ -31,10 +31,7 @@ def analyse():
         s_ = s_ / 512.
         f = dt.harmonique(dt.detection(dt.seuil(-40,s_)))
         f = np.array(f)*44100/float(2**16)
-        if list(f):
-            recorded_frequency.append(f)
-        else:
-            check_and_send(recorded_frequency)
+        print f
         
 
             
