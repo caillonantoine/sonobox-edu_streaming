@@ -24,6 +24,7 @@ def analyse():
     signal_in = sc.init_sound_card(512)
     for elm in signal_in:
         s_ = abs(np.fft.rfft(pad(elm)))
+        s_ = s_ / 512.
         f = dt.harmonique(dt.detection(dt.seuil(-35,s_)))
         f = np.array(f)*44100/float(2**16)
         print f

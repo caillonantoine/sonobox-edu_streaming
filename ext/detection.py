@@ -1,37 +1,41 @@
 #coding:utf-8
 import numpy as np
-import peak_location as pl
+import matplotlib.pyplot as plt
 
 signal = [0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0,1,2,1,0,0,0,0,1,2,3,0,0,0]
+signal = np.asarray(signal,dtype=float)
+signal = signal / np.max(signal)
 
 def detection(array):
-    array_pike = np.zeros_like(array)
-    array = array * pl.detection(array,50,np.max(array))
-    little_array = []
-    for i,o in enumerate(array):
-        if o:
-            little_array.append(o)
-        elif little_array:
-            argmax = np.argmax(little_array)
-            array_pike[argmax+i-len(little_array)] = 1
-            little_array = []
-    return array_pike
+    freq = []
+    i = 0
+    o = 0
+    for k in range(10):
+        t = 1 - k/10.
+        for ind,val in enumerate(array):
+            if val >= t and i == 0:
+                i = ind
+            elif val < t and i != 0:
+                o = ind
+            
+            if i != 0 and o != 0:
+                mes = np.argmax(array[i:o]) + i
+                if mes in freq:
+                    i,o = 0,0
+                else:
+                    freq.append(mes)
+                    i,o = 0,0
+    return freq
     
 def seuil(amp,array):
-    array = abs(array)/512.
     return np.clip(array,10**(amp/20.),None) -10**(amp/20.)
     
 def harmonique(array):
     fondamentale = []
-    for i,o in enumerate(array):
-        if o:
-            if i % np.array(fondamentale).any() <= 1:
-                pass
-            else:
-                fondamentale.append(i)
+    for elm in array:
+        if fondamentale:
+            if np.min(abs(elm % np.array(fondamentale))) != 0:
+                fondamentale.append(elm)
+        else:
+            fondamentale.append(elm)
     return fondamentale
-    
-space = np.linspace(0,1,44100)
-signal = np.sin(1000*np.pi*2*space) + np.sin(1500*np.pi*2*space)
-
-a = detection(abs(np.fft.rfft(signal)))
