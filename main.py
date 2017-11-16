@@ -21,14 +21,15 @@ def get_midi_note_from_f(f):
     return midi_note[np.argmin(abs(midi_scale - f))]-12
         
 def analyse():
-    signal_in = sc.init_sound_card(16384)
+    signal_in = sc.init_sound_card(4096)
     for elm in signal_in:
         s_ = np.fft.rfft(pad(elm))
-        f = dt.harmonique(dt.detection(dt.seuil(-30,s_)))
+        f = dt.harmonique(dt.detection(dt.seuil(-40,s_)))
         f = np.array(f)*44100/float(2**16)
         if list(f):
             print f.astype(int)
+    
         
             
 if __name__ == "__main__":
-    analyse()
+    pass

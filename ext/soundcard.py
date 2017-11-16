@@ -19,6 +19,7 @@ def init_sound_card(chunk_size):
     sc.setperiodsize(chunk_size)
     while True:
         yield np.fromstring(sc.read()[1],np.int16)/32767.
+    sc.close()
         
         
     

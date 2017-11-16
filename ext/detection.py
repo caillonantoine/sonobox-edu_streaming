@@ -1,6 +1,7 @@
 #coding:utf-8
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.io import wavfile
 
 signal = [0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0,1,2,1,0,0,0,0,1,2,3,0,0,0]
 
@@ -17,8 +18,7 @@ def detection(array):
     return array_pike
     
 def seuil(amp,array):
-    array = abs(array)/16384.
-    return np.clip(array,10**(amp/20.),None) -10**(amp/20.)
+    return np.clip(np.asarray(array),10**(amp/20),None) - 10**(amp/20)
     
 def harmonique(array):
     fondamentale = []
@@ -30,5 +30,5 @@ def harmonique(array):
                 fondamentale.append(i)
     return fondamentale
     
-space = np.linspace(0,1,44100)
-signal = np.sin(1000*np.pi*2*space) + np.sin(1500*np.pi*2*space)
+signal= wavfile.read('../siffle.wav')[1]/32767.
+s_ = abs(np.fft.rfft(signal))/len(signal)
