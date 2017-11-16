@@ -22,12 +22,16 @@ def get_midi_note_from_f(f):
         
 def analyse():
     signal_in = sc.init_sound_card(512)
+    recorded_frequency = []
     for elm in signal_in:
         s_ = abs(np.fft.rfft(pad(elm)))
         s_ = s_ / 512.
-        f = dt.harmonique(dt.detection(dt.seuil(-35,s_)))
+        f = dt.harmonique(dt.detection(dt.seuil(-40,s_)))
         f = np.array(f)*44100/float(2**16)
-        print f
+        if list(f):
+            recorded_frequency.append(f)
+        else:
+            
         
             
 if __name__ == "__main__":
