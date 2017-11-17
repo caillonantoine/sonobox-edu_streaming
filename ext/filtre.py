@@ -1,28 +1,38 @@
 #coding:utf-8
 import numpy as np
-import matplotlib.pyplot as plt
+import scipy.signal as sc
 
-class CoupeBas():
-    def __init__(self):
-        self.x = np.zeros(5)
-        self.y = np.zeros(5)
-        self.alpha = 700/(float(2*44100))
-    def filtre(self,array):
-        x = np.concatenate([self.x,array])
-        y = list(self.y)
+def pad(array,n=1):
+    #Fonction bourrage de zéro modifiée
+    N = len(array)
+    if n != 1:
+        y = np.zeros(n)
+        y[0:N] = array
+        return y
+    else:
+        while 2**n < N:
+            n += 1
+        y = np.zeros(2**n)
+        y[0:N] = array
+        return y
         
-        for n in range(len(x))[5:]:
-            y.append((1/(1+self.alpha**4))*(x[n-4] - 4*x[n-3] + x[n-2] -4*x[n-1] + x[n]) -\
-            (y[n-4] - 4* ((1-self.alpha**4)/(1+self.alpha**4))*y[n-3] + 6*y[n-2] \
-            -4* ((1-self.alpha**4)/(1+self.alpha**4))*y[n-1]))
-        
-        self.x = x[-5:]
-        self.y = y[-5:]
-        return y[5:]
-        
-if __name__ == "__main__":
-    space = np.linspace(0,1,44100)
-    signal = np.sin(440*2*np.pi*space) + np.sin(440*2*2*np.pi*space) + np.sin(440*2*4*np.pi*space) + np.sin(440*2*6*np.pi*space)
-    filtre = CoupeBas()
-    signal_filtre = filtre.filtre(signal)
-    plt.plot(signal_filtre)
+def high_pass(array,FIR):
+    return cvn(array,FIR)
+    
+def cvn(x,y):
+    #Convole deux signaux en utilisant les propriétées de la FFT
+    N = len(x)
+    x = pad(x)
+    y = pad(y,n=len(x))
+    x_ = np.fft.rfft(x)
+    y_ = np.fft.rfft(y)
+    return np.fft.irfft(x_*y_)[0:N]
+    
+nyq = 44100/2. #fréquence de nyquist
+f = 700/nyq #fréquence de coupure
+width = 100/nyq #taille de la transition du filtre
+gain = 60 #attenuation dans la bande rejetée
+N,beta = sc.kaiserord(gain,width) #calcul de l'ordre du filtre pour satisfaire le gabarit
+
+coef = sc.firwin(N+1,f,width,window=('kaider',beta),pass_zero=False) #des coefs
+
