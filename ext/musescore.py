@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from time import sleep
 try:
-    import mideo as md
+    import mido as md
     mido = True
 except:
     print "Librairie mido non installée, les fonctions midi ne seront pas utilisables. \n"

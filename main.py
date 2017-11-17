@@ -1,9 +1,18 @@
 #coding:utf-8
+print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+print "%                                         %"
+print "%       4AA03 - SONOBOX STREAMING         %"
+print "%                                         %"
+print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+
+from time import sleep
+sleep(5)
+
 import numpy as np
 from ext import musescore as ms
 from ext import soundcard as sc
 from ext import detection as dt
-from time import sleep
+
 
 #%%
 class Notes(object):
@@ -86,5 +95,26 @@ def analyse():
 
             
 if __name__ == "__main__":
-    print "Pour démarrer l'analyse, entrer \"analyse()\""
     
+    modules = []
+    if dt.fortran:
+        modules.append("optimisation du module de detection en Fortran")
+    if sc.alsa:
+        modules.append("alsaaudio (accès carte son)")
+    else:
+        modules.append("PyAudio (accès carte son)")
+    if ms.mido:
+        modules.append("Mido (Création de ports virtuels midi)")
+        
+    
+    print "Les librairies suivantes ont été importées:\n   -{}\n".format("\n   -".join(modules))
+    if dt.fortran and ms.mido:
+        print "Le logiciel a été correctement configuré et fonctionne de manière optimale.\n\
+Félicitations!\n"
+    else:
+        print "Le logiciel est en mesure de fonctionner, mais pas de manière optimale.\n\
+Se réferrer au README.md pour s'informer de la liste des modules à installer."
+    if raw_input("Commencer l'analyse? [y/n] ").upper() == "Y":
+        analyse()
+    else:
+        print "Bye!"

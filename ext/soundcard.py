@@ -1,10 +1,12 @@
 #coding:utf-8
+from time import sleep
+
 try:
     import alsaaudio as aa
-    print "Utilisation du module alsa"
+    print "Utilisation du module alsa\n"
     alsa = True
 except:
-    print "module alsaaudio non trouvé, basculement sur pyaudio"
+    print "module alsaaudio non trouvé, basculement sur pyaudio\n"
     sleep(3)
     try:
         import pyaudio as pa
@@ -15,13 +17,14 @@ import numpy as np
 
 if alsa:
     pcms = aa.pcms(aa.PCM_CAPTURE)
-    print "LISTE DES PERIPHERIQUES DISPONIBLES"
+    print "LISTE DES PERIPHERIQUES DISPONIBLES\n"
     
     for i in range(len(pcms)):
-    	print "{} - {}".format(i,pcms[i])
+        if not "surround" in pcms[i]:
+            print "{} - {}".format(i,pcms[i])
     
     device = pcms[int(raw_input("Tapez le numéro correspondant au périphérique choisi:\n"))]
-    print "\nLe périphérique utilisé est {}".format(device)
+    print "\nLe périphérique utilisé est {}\n\n".format(device)
     
     def init_sound_card(chunk_size):
         sc = aa.PCM(type=aa.PCM_CAPTURE,device=device)

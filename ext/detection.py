@@ -3,10 +3,13 @@ import numpy as np
 from time import sleep
 try:
     from ext.pfm import detection
+    fortran = True
 except:
+    fortran = False
     print "Module Fortran non trouvé,\n\
-Si vous souhaitez travailler en temps réel, pensez à compiler\n\
-\"ext/peak_from_max.f90\" en \"pfm.so\"."
+Si vous souhaitez maximiser les performances, pensez à compiler\n\
+\"ext/peak_from_max.f90\" en \"pfm\" via f2py.\n Autrement, il y a un gros risque de\
+perte d'échantillons.\n"
     sleep(3)
     def detection(array):
         freq = []
