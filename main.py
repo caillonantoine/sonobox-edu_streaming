@@ -6,8 +6,9 @@ print "%                                         %"
 print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 from time import sleep
-sleep(5)
+sleep(3)
 
+#IMPORT DES DIFFERENTS MODULES
 import numpy as np
 from ext import musescore as ms
 from ext import soundcard as sc
@@ -41,6 +42,8 @@ class Notes(object):
 
 
 def pad(array):
+	#Fonction Bourrage de zéro
+
     if len(array) > 2**16:
         print "TROP GRAND"
         return array
@@ -50,35 +53,50 @@ def pad(array):
         return y
         
 def get_midi_note_from_f(f):
+	#Dresse un tableau des fréquences en fonction des notes midi, effectue la comparaison
+	#avec f, et renvoie la note midi correspondante
     midi_scale = 110*np.power(2,np.array(range(120))/12.)
     midi_note = np.array(range(120))+45
     return midi_note[np.argmin(abs(midi_scale - f))]-12
     
 def check_and_send(freq):
+	#Tire parti de la classe Notes().
+	#
+	#Cette fonction va moyenner les différentes notes sifflées, afin de se rapprocher
+	#de la valeur 'vraie' de la fréquence.
+	#Elle élimine aussi les accidents. Si une harmonique est laissée par le filtre harmonique
+	#sur un petit nombre de paquets, elle sera ignorée.
+
     notes = np.array([],dtype=Notes)
     for liste in freq:
         for f in liste:
             if f:
-                if notes.any():
+                if notes.any(): #TRI DES FREQUENCES EN FONCTION DES FREQUENCES DEJA REPERTORIEES
                     if (abs(f - notes) >= 50).all():
                         notes = np.append(notes,Notes())
                         notes[-1] + f
                     else:
                         ind = np.argmin(abs(f - notes))
                         notes[ind] + f
-                else:
+                else: #PAS DEFREQUENCE REPERTORIEE, ON AJOUTE DIRECTEMENT.
                     notes = np.append(notes,Notes())
                     notes[-1] + f
     w = np.array([elm.get_size() for elm in notes],dtype=float)
     w = w/np.max(w)
     y = []
-    
+    #On vérifie que la fréquence apparait suffisamment de fois:
     for i,o in enumerate(w):
         if o >= .5:
             y.append(get_midi_note_from_f(notes[i].get_moy()))
     ms.muse.send(np.array(y).astype('int'))
         
 def analyse():
+	#Cette fonction lance une boucle, va récuperer des données audio dans le module ext/soundcard
+	#et va effectuer une transformée de fourier rapide de ces données, pour en suite traiter le signal
+	#via les fonctions dt.seuil, dt.detection,dt.harmonique.
+	#
+	#Une fois les données traitées, si des fréquences sont détectées, on appelle la fonction check_and_send
+	
     chunk_size = 512
     signal_in = sc.init_sound_card(chunk_size)
     recorded_frequency = []
@@ -94,8 +112,7 @@ def analyse():
             recorded_frequency = []
 
             
-if __name__ == "__main__":
-    
+if __name__ == "__main__": #Cette partie est cosmétique, elle aide au paramétrage du programme.
     modules = []
     if dt.fortran:
         modules.append("optimisation du module de detection en Fortran")

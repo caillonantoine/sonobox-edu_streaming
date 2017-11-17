@@ -1,7 +1,8 @@
 #coding:utf-8
 import numpy as np
 from time import sleep
-try:
+
+try: #ON ESSAYE D'IMPORTER LE MODULE FORTRAN
     from ext.pfm import detection
     fortran = True
 except:
@@ -12,6 +13,11 @@ Si vous souhaitez maximiser les performances, pensez à compiler\n\
 perte d'échantillons.\n"
     sleep(3)
     def detection(array):
+        """Définition d'un module de remplacement du module fortran.
+        Fonctionnement rigoureusement identique, à l'exception du nombre d'itérations.
+        L'utilisation de cette implémentation de l'algorithme entrainera des ralentissements
+        ainsi que despertes de paquet d'échantillons, du à la lenteur de son execution.
+        """
         freq = []
         i = 0
         o = 0
@@ -33,9 +39,14 @@ perte d'échantillons.\n"
         return freq
 
 def seuil(amp,array):
+    """Fonction qui met à 0 toutes les valeurs inférieur à amp (en dBFS)
+    """
     return np.clip(array,10**(amp/20.),None) -10**(amp/20.)
     
 def harmonique(array):
+    """
+    Cherche la présence d'harmoniques (i.e de multiples d'une fondamentale) dans une liste de fréquence.
+    """
     fondamentale = []
     for elm in array:
         if fondamentale:
@@ -45,7 +56,3 @@ def harmonique(array):
             fondamentale.append(elm)
     
     return np.concatenate([fondamentale,np.zeros(20-len(fondamentale))])
-    
-if __name__ == "__main__":
-    print detection(signal)       
-    print pfm.detection(signal)

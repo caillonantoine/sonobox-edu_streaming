@@ -1,20 +1,25 @@
 subroutine detection(x,y,N)
 implicit none
 
-integer, intent(in) :: N
-real, intent(in), dimension(N) :: x
-integer, intent(out), dimension(20) :: y
+!Dans ce programme, on va diviser l'axe vertical du spectre en 10 morceaux et effectuer une
+!recherche de pics sur ces 10 morceaux.
+!Dès qu'on découvre un nouveau pic sur un des 10 morceaux, on le repertorie dans un tableau.
 
-integer :: i,o,k,f,m,nb
-real :: t
+
+integer, intent(in) :: N !taille de X
+real, intent(in), dimension(N) :: x !donnée audio d'entrée
+integer, intent(out), dimension(20) :: y !tableau de fréquences
+
+integer :: i,o,k,f,m,nb !in point,out point,vars muettes
+real :: t !threshold
 
 i = 0
 o = 0
 nb = 1
 
-do k=1,10
-    t = 1 - real(k)/10
-    do m=1,N
+do k=1,10 !division du spectre
+    t = 1 - real(k)/10 !initialisation du threshold
+    do m=1,N !recherche de pics
         if (x(m) >= t .and. i == 0) then
             i = m
         elseif (x(m) < t .and. i /= 0) then
@@ -34,26 +39,4 @@ do k=1,10
         endif
     enddo
 enddo
-
-!def detection(array):
-!    freq = []
-!    i = 0
-!    o = 0
-!    for k in range(10):
-!        t = 1 - k/10.
-!        for ind,val in enumerate(array):
-!            if val >= t and i == 0:
-!                i = ind
-!            elif val < t and i != 0:
-!                o = ind
-!            
-!            if i != 0 and o != 0:
-!                mes = np.argmax(array[i:o]) + i
-!                if mes in freq:
-!                    i,o = 0,0
-!                else:
-!                    freq.append(mes)
-!                    i,o = 0,0
-!    return freq
-
 end subroutine detection
