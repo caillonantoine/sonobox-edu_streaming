@@ -1,7 +1,7 @@
 #coding:utf-8
 import numpy as np
 from ext import musescore as ms
-#from ext import soundcard as sc
+from ext import soundcard as sc
 from ext import detection as dt
 
 #%%
@@ -10,7 +10,7 @@ class Notes(object):
     def __init__(self):
         self.freq = np.array([],dtype=float)
     def get_moy(self):
-        return np.mean(self.freq)
+        return float(np.mean(self.freq))
     def get_size(self):
         return len(self.freq)
     def __add__(self,x):
@@ -50,16 +50,23 @@ def check_and_send(freq):
         for f in liste:
             if f:
                 if notes.any():
-                    if not (f % notes <= 50).any():
+                    if (abs(f - notes) >= 50).all():
                         notes = np.append(notes,Notes())
                         notes[-1] + f
                     else:
-                        ind = np.argmin(f % notes)
+                        ind = np.argmin(abs(f - notes))
                         notes[ind] + f
                 else:
                     notes = np.append(notes,Notes())
                     notes[-1] + f
-    return notes
+    w = np.array([elm.get_size() for elm in notes],dtype=float)
+    w = w/np.max(w)
+    y = []
+    
+    for i,o in enumerate(w):
+        if o >= .5:
+            y.append(get_midi_note_from_f(notes[i].get_moy()))
+    ms.muse.send(np.array(y).astype('int'))
         
 def analyse():
     chunk_size = 512
@@ -79,4 +86,5 @@ def analyse():
             
 if __name__ == "__main__":
     print "\nDémarrage de l'analyse...\nVous pouvez siffler."    
-    #analyse()
+    analyse()
+    
