@@ -1,14 +1,14 @@
 # sonobox-edu_streaming
 PROJET 4AA03
 
-Transformer un sifflement en une information MIDI pour pouvoir afficher à l'écran les notes sifflées.
+Transformer des sifflements en informations MIDI pour pouvoir afficher à l'écran les notes sifflées.
 
 ### Dépendances nécessaires
-- alsaaudio (python)
+- alsaaudio ou pyaudio
 - numpy
-- mido
-- python-rtmidi
-- musescore pour l'affichage
+- mido (interfaçage MIDI)
+- python-rtmidi (nécessaire pour MIDI)
+- musescore (Logiciel de partition libre)
 
 ### Installation
 
@@ -18,7 +18,8 @@ Installation sur Ubuntu (ou tout autre distribution basée sur debian):
 ```sh
 sudo ./install.sh
 ```
-Ce script installera les différentes dépendances requises ainsi que les logiciels SPYDER et MUSESCORE.
+Ce script installera les différentes dépendances requises.
 
 ### Plateforme
-Ce logiciel est écrit en utilisant des librairies fonctionnant sur Linux. Pour une compatibilité avec Windows, il faut remplacer la partie alsaaudio par pyaudio. 
+Ce logiciel est compatible Windows / macOS / Linux/
+Le programme n'a pas été testé sous Mac (à défaut d'en avoir un), mais devrait fonctionner sans problème, sous réserve d'avoir les librairies nécessaires.
