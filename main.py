@@ -102,7 +102,7 @@ def analyse():
     signal_in = sc.init_sound_card(chunk_size)
     recorded_frequency = []
     for elm in signal_in:
-        elm = fl.high_pass(elm,fl.coef) #On coupe les fréquences inférieures à 700Hz
+        #elm = fl.cvn(elm,fl.coef) #On coupe les fréquences inférieures à 700Hz
         s_ = abs(np.fft.rfft(pad(elm)))
         s_ = 2*s_ / float(chunk_size)
         f = dt.harmonique(dt.detection(dt.seuil(-40,s_)))
