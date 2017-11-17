@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-import mido as md
+from time import sleep
+try:
+    import mideo as md
+    mido = True
+except:
+    print "Librairie mido non installée, les fonctions midi ne seront pas utilisables. \n"
+    sleep(3)
+    mido = False
 from time import sleep as wait
 
 class MuseScore(object):
@@ -13,5 +20,11 @@ class MuseScore(object):
         print "sent {}".format(note)
     def close(self):
         self.midi_output.close()
-
-muse = MuseScore()
+if mido:
+    muse = MuseScore()
+else:
+    class NotMuse(object):
+        def send(self,note):
+            for elm in note:
+                print "NOTE MIDI = {}".format(elm)
+    muse = NotMuse()

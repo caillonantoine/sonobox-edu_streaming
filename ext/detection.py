@@ -1,12 +1,13 @@
 #coding:utf-8
 import numpy as np
-import matplotlib.pyplot as plt
+from time import sleep
 try:
     from ext.pfm import detection
 except:
     print "Module Fortran non trouvé,\n\
 Si vous souhaitez travailler en temps réel, pensez à compiler\n\
 \"ext/peak_from_max.f90\" en \"pfm.so\"."
+    sleep(3)
     def detection(array):
         freq = []
         i = 0
@@ -28,10 +29,6 @@ Si vous souhaitez travailler en temps réel, pensez à compiler\n\
                         i,o = 0,0
         return freq
 
-signal = [0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0,1,2,1,0,0,0,0,1,2,3,0,0,0]
-signal = np.asarray(signal,dtype=float)
-signal = signal / np.max(signal)
-    
 def seuil(amp,array):
     return np.clip(array,10**(amp/20.),None) -10**(amp/20.)
     

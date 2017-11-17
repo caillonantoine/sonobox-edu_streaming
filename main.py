@@ -3,6 +3,7 @@ import numpy as np
 from ext import musescore as ms
 from ext import soundcard as sc
 from ext import detection as dt
+from time import sleep
 
 #%%
 class Notes(object):
@@ -85,6 +86,5 @@ def analyse():
 
             
 if __name__ == "__main__":
-    print "\nDémarrage de l'analyse...\nVous pouvez siffler."    
-    analyse()
+    print "Pour démarrer l'analyse, entrer \"analyse()\""
     
