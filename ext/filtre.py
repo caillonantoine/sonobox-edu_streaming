@@ -30,7 +30,7 @@ def cvn(x,y):
     
 nyq = 44100/2. #fréquence de nyquist
 f = 700/nyq #fréquence de coupure
-width = 100/nyq #taille de la transition du filtre
+width = 180/nyq #taille de la transition du filtre
 gain = 60 #attenuation dans la bande rejetée
 N,beta = sc.kaiserord(gain,width) #calcul de l'ordre du filtre pour satisfaire le gabarit
 
