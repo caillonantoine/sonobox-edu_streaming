@@ -5,6 +5,7 @@ import scipy.signal as sc
 last = np.zeros(891)
 
 def cvn2(x,y):
+    #convole x et y en prenant en compte les 891 dernières valeurs de x
     global last
     x_last = pad(np.concatenate([last,x]))
     last = x[-891::]
@@ -26,17 +27,7 @@ def pad(array,n=1):
         y = np.zeros(2**n)
         y[0:N] = array
         return y
-    
-    
-def cvn(x,y):
-    #Convole deux signaux en utilisant les propriétées de la FFT
-    N = len(x)
-    M = len(y)
-    x = pad(x)
-    y = pad(y,n=len(x))
-    x_ = np.fft.rfft(x)
-    y_ = np.fft.rfft(y)
-    return np.fft.irfft(x_*y_)[M:N]
+
     
 nyq = 44100/2. #fréquence de nyquist
 f1 = 700/nyq #fréquence de coupure

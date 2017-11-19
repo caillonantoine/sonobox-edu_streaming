@@ -1,5 +1,5 @@
 *.pyc
 .spyderproject
 *.so
-
+*.txt
 siffle\.wav
