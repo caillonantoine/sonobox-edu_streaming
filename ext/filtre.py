@@ -2,6 +2,17 @@
 import numpy as np
 import scipy.signal as sc
 
+last = np.zeros(891)
+
+def cvn2(x,y):
+    global last
+    x_last = pad(np.concatenate([last,x]))
+    last = x[-891::]
+    y = pad(y)
+    return sc.fftconvolve(x_last,y,mode='valid')[len(pad(x)) - len(x)::]
+    
+    
+
 def pad(array,n=1):
     #Fonction bourrage de zéro modifiée
     N = len(array)
@@ -20,11 +31,12 @@ def pad(array,n=1):
 def cvn(x,y):
     #Convole deux signaux en utilisant les propriétées de la FFT
     N = len(x)
+    M = len(y)
     x = pad(x)
     y = pad(y,n=len(x))
     x_ = np.fft.rfft(x)
     y_ = np.fft.rfft(y)
-    return np.fft.irfft(x_*y_)[0:N]
+    return np.fft.irfft(x_*y_)[M:N]
     
 nyq = 44100/2. #fréquence de nyquist
 f1 = 700/nyq #fréquence de coupure
