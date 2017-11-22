@@ -3,3 +3,5 @@
 *.so
 *.txt
 siffle\.wav
+*.eps
+detection\
