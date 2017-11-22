@@ -5,7 +5,7 @@ import scipy.signal as sc
 last = np.zeros(891)
 
 def cvn2(x,y):
-    #convole x et y en prenant en compte les 891 dernières valeurs de x
+    """convole x et y en prenant en compte les 891 dernières valeurs de x"""
     global last
     x_last = pad(np.concatenate([last,x]))
     last = x[-891::]
@@ -15,7 +15,7 @@ def cvn2(x,y):
     
 
 def pad(array,n=1):
-    #Fonction bourrage de zéro modifiée
+    """Fonction bourrage de zéro modifiée"""
     N = len(array)
     if n != 1:
         y = np.zeros(n)

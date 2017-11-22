@@ -43,7 +43,7 @@ class Notes(object):
 
 
 def pad(array):
-	#Fonction Bourrage de zéro
+    """Fonction Bourrage de zéro"""
 
     if len(array) > 2**16:
         print "TROP GRAND"
@@ -54,19 +54,19 @@ def pad(array):
         return y
         
 def get_midi_note_from_f(f):
-	#Dresse un tableau des fréquences en fonction des notes midi, effectue la comparaison
-	#avec f, et renvoie la note midi correspondante
+    """Dresse un tableau des fréquences en fonction des notes midi, effectue la comparaison
+    avec f, et renvoie la note midi correspondante"""
     midi_scale = 110*np.power(2,np.array(range(120))/12.)
     midi_note = np.array(range(120))+45
     return midi_note[np.argmin(abs(midi_scale - f))]-12
     
 def check_and_send(freq):
-	#Tire parti de la classe Notes().
-	#
-	#Cette fonction va moyenner les différentes notes sifflées, afin de se rapprocher
-	#de la valeur 'vraie' de la fréquence.
-	#Elle élimine aussi les accidents. Si une harmonique est laissée par le filtre harmonique
-	#sur un petit nombre de paquets, elle sera ignorée.
+    """Tire parti de la classe Notes().
+    
+    Cette fonction va moyenner les différentes notes sifflées, afin de se rapprocher
+    de la valeur 'vraie' de la fréquence.
+    Elle élimine aussi les accidents. Si une harmonique est laissée par le filtre harmonique
+    sur un petit nombre de paquets, elle sera ignorée."""
 
     notes = np.array([],dtype=Notes)
     for liste in freq:
@@ -92,12 +92,12 @@ def check_and_send(freq):
     ms.muse.send(np.array(y).astype('int'))
         
 def analyse():
-	#Cette fonction lance une boucle, va récuperer des données audio dans le module ext/soundcard
-	#et va effectuer une transformée de fourier rapide de ces données, pour en suite traiter le signal
-	#via les fonctions dt.seuil, dt.detection,dt.harmonique.
-	#
-	#Une fois les données traitées, si des fréquences sont détectées, on appelle la fonction check_and_send
-	
+    """Cette fonction lance une boucle, va récuperer des données audio dans le module ext/soundcard
+    et va effectuer une transformée de fourier rapide de ces données, pour en suite traiter le signal
+    via les fonctions dt.seuil, dt.detection,dt.harmonique.
+    
+    Une fois les données traitées, si des fréquences sont détectées, on appelle la fonction check_and_send"""
+    
     chunk_size = 512
     signal_in = sc.init_sound_card(chunk_size)
     recorded_frequency = []
