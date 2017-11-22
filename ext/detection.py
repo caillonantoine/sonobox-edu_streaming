@@ -48,6 +48,7 @@ def harmonique(array):
     Cherche la présence d'harmoniques (i.e de multiples d'une fondamentale) dans une liste de fréquence.
     """
     fondamentale = []
+    array.sort()
     for elm in array:
         if fondamentale:
             if np.min(abs(elm % np.array(fondamentale))) != 0:
