@@ -36,7 +36,7 @@ width = 180/nyq #taille de la transition du filtre
 gain = 60 #attenuation dans la bande rejetée
 N,beta = sc.kaiserord(gain,width) #calcul de l'ordre du filtre pour satisfaire le gabarit
 
-coef = sc.firwin(N+1,[f1,f2],width,window=('kaider',beta),pass_zero=False) #des coefs
+coef = sc.firwin(N+1,[f1,f2],width,window=('kaider',beta),pass_zero=False) #génération des coefs
 
 if __name__ == "__main__": #PARTIE DE TEST
     space = np.linspace(0,1,44100)

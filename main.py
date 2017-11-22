@@ -73,7 +73,7 @@ def check_and_send(freq):
         for f in liste:
             if f:
                 if notes.any(): #TRI DES FREQUENCES EN FONCTION DES FREQUENCES DEJA REPERTORIEES
-                    if (abs(f - notes) >= 50).all():
+                    if (abs(f - notes) >= 100).all():
                         notes = np.append(notes,Notes())
                         notes[-1] + f
                     else:
